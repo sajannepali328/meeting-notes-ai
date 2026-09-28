@@ -1,0 +1,21 @@
+services:
+  frontend:
+    build: ./frontend
+    image: metting_frontend
+    container_name: metting_frontend
+    ports:
+      - "3000:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  backend:
+    build: ./backend
+    image: metting_backend
+    container_name: metting_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: python manage.py runserver 0.0.0.0:8000
