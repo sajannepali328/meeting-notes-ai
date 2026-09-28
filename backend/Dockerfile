@@ -18,14 +18,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project code into the container
 COPY . /app/
 
-# Granthign permission
-RUN chmod +x ./entrypoint.sh
-
 # Expose the port Django runs on
 EXPOSE 8000
 
 # Set entrypoint to run the script first
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
 
 # Run the development server (binds to all network interfaces so Docker can reach it)
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
