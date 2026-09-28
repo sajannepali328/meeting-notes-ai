@@ -15,7 +15,9 @@ export const useFetchQuery = (url) => {
 
     return {
         data: query.data ?? [],      
-        isLoading: query.isLoading, 
+        isLoading: query.isLoading,
+        isFetching: query.isFetching,
+        refetch: query.refetch,
     };
 };
 

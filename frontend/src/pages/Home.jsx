@@ -33,6 +33,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { API } from '../api/URL';
 import { useFetchQuery } from '../api/useFetchQuery';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 // ----------------------------------------------------------------------
 // 1. Separate Detail Modal Component
@@ -185,7 +186,7 @@ export const FullView = ({ selectedNote, onClose }) => {
 // 2. Main Home Page Component
 // ----------------------------------------------------------------------
 const Home = () => {
-  const { data: notes, isLoading, error } = useFetchQuery(API.notes);
+  const { data: notes, isLoading, refetch, isFetching } = useFetchQuery(API.notes);
   const [selectedNote, setSelectedNote] = useState(null);
 
   const handleRowClick = (note) => {
@@ -204,24 +205,29 @@ const Home = () => {
     );
   }
 
-  if (error) {
-    return (
-      <Container maxWidth="lg" sx={{ my: 4 }}>
-        <Alert severity="error">Failed to load meeting notes. Please check your network or server.</Alert>
-      </Container>
-    );
-  }
-
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Header */}
-      <Box sx={{ mb: 4, pb: 2, borderBottom: 1, borderColor: 'divider' }}>
-        <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
-          Meeting Intelligence Dashboard
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Click on any meeting row to view detailed insights, decisions, and action items.
-        </Typography>
+      <Box sx={{ mb: 4, pb: 2, borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <Box>
+          <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
+            Meeting Intelligence Dashboard
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Click on any meeting row to view detailed insights, decisions, and action items.
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Button
+            variant="outlined"
+            startIcon={isFetching ? <CircularProgress size={16} color="inherit" /> : <RefreshIcon />}
+            onClick={() => refetch && refetch()}
+            disabled={isFetching}
+          >
+            Refresh
+          </Button>
+        </Box>
       </Box>
 
       {/* Main Table */}

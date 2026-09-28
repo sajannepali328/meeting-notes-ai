@@ -10,8 +10,8 @@ def process_summary_in_thread(note_id):
         note = MeetingNote.objects.get(id=note_id)
         note.summary = generate_meeting_summary(note.raw_text)
         note.save()
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
 
 class MeetingNoteViewSet(viewsets.ModelViewSet):
     queryset = MeetingNote.objects.all()
